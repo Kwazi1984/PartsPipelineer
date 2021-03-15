@@ -1,0 +1,1 @@
+kill $(ps | grep 'dotnet')
