@@ -1,7 +1,7 @@
 {
     "Routes": [
       {
-        "DownstreamPathTemplate": "/weatherforecast",
+        "DownstreamPathTemplate": "/{everything}",
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
@@ -9,10 +9,11 @@
             "Port": 5010
           }
         ],
-        "UpstreamPathTemplate": "/api/tools/weatherforecast"
+        "UpstreamPathTemplate": "/api/tools/{everything}",
+        "SwaggerKey": "tools"
       },
       {
-        "DownstreamPathTemplate": "/weatherforecast",
+        "DownstreamPathTemplate": "/{everything}",
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
           {
@@ -20,7 +21,30 @@
             "Port": 5020
           }
         ],
-        "UpstreamPathTemplate": "/api/devices/weatherforecast"
+        "UpstreamPathTemplate": "/api/devices/{everything}",
+        "SwaggerKey": "devices"
+      }
+    ],
+    "SwaggerEndPoints": [
+      {
+        "Key": "tools",
+        "Config": [
+          {
+            "Name": "PartsPipelineer.Services.Tools",
+            "Version": "v1",
+            "Url": "http://localhost:5010/swagger/v1/swagger.json"
+          }
+        ]
+      },
+      {
+        "Key": "devices",
+        "Config": [
+          {
+            "Name": "PartsPipelineer.Services.Devices",
+            "Version": "v1",
+            "Url": "http://localhost:5020/swagger/v1/swagger.json"
+          }
+        ]
       }
     ],
     "GlobalConfiguration": {
