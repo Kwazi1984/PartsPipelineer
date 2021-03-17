@@ -28,16 +28,11 @@ namespace PartsPipelineer.Api.Gateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PartsPipelineer.Api.Gateway", Version = "v1" });
-            // });
-
-            services.AddOcelot(Configuration);
+            services.AddControllers();  
 
             services.AddSwaggerForOcelot(Configuration);
+
+            services.AddOcelot(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,15 +41,13 @@ namespace PartsPipelineer.Api.Gateway
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                // app.UseSwagger();
-                // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PartsPipelineer.Api.Gateway v1"));
             }
 
-            
-            
             app.UseSwaggerForOcelotUI(opt => {
                 opt.PathToSwaggerGenerator = "/swagger/docs";
             });
+
+            app.UseOcelot();
 
             app.UseHttpsRedirection();
 

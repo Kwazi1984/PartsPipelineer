@@ -26,6 +26,12 @@ namespace PartsPipelineer.Services.Tools
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("ApiGatewayPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -43,6 +49,8 @@ namespace PartsPipelineer.Services.Tools
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PartsPipelineer.Services.Tools v1"));
             }
+
+            app.UseCors("ApiGatewayPolicy");
 
             app.UseHttpsRedirection();
 
