@@ -1,6 +1,18 @@
 {
     "Routes": [
       {
+        "DownstreamPathTemplate": "/",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 5010
+          }
+        ],
+        "UpstreamPathTemplate": "/api/tools",
+        "SwaggerKey": "tools"
+      },
+      {
         "DownstreamPathTemplate": "/{everything}",
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
@@ -11,6 +23,18 @@
         ],
         "UpstreamPathTemplate": "/api/tools/{everything}",
         "SwaggerKey": "tools"
+      },
+      {
+        "DownstreamPathTemplate": "/",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 5020
+          }
+        ],
+        "UpstreamPathTemplate": "/api/devices",
+        "SwaggerKey": "devices"
       },
       {
         "DownstreamPathTemplate": "/{everything}",

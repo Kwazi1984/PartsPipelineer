@@ -1,0 +1,12 @@
+version: "3.5"
+
+services:
+  consul:
+    image: bitnami/consul:latest
+    container_name: consul
+    ports:
+      - 8500:8500
+    # networks:
+    #   - pplineer
+    volumes:
+      - /consul:/consul/data

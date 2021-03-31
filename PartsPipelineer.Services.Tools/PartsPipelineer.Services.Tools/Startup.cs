@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PartsPipelineer.Services.Tools.Extensions.Consul;
 
 namespace PartsPipelineer.Services.Tools
 {
@@ -34,6 +35,9 @@ namespace PartsPipelineer.Services.Tools
             }));
 
             services.AddControllers();
+
+            services.AddConsul(Configuration);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PartsPipelineer.Services.Tools", Version = "v1" });
@@ -49,6 +53,8 @@ namespace PartsPipelineer.Services.Tools
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PartsPipelineer.Services.Tools v1"));
             }
+
+            app.UseConsul(Configuration);
 
             app.UseCors("ApiGatewayPolicy");
 
