@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,7 +13,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PartsPipelineer.Services.Tools.Extensions.Consul;
-
 namespace PartsPipelineer.Services.Tools
 {
     public class Startup
@@ -38,6 +38,8 @@ namespace PartsPipelineer.Services.Tools
 
             services.AddConsul(Configuration);
 
+            services.AddHealthChecks();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PartsPipelineer.Services.Tools", Version = "v1" });
@@ -54,7 +56,7 @@ namespace PartsPipelineer.Services.Tools
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PartsPipelineer.Services.Tools v1"));
             }
 
-            app.UseConsul(Configuration);
+            app.UseConsul();
 
             app.UseCors("ApiGatewayPolicy");
 
@@ -67,7 +69,9 @@ namespace PartsPipelineer.Services.Tools
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
+
         }
     }
 }

@@ -3,6 +3,7 @@ using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace PartsPipelineer.Services.Tools.Extensions.Consul
 {
@@ -23,27 +24,39 @@ namespace PartsPipelineer.Services.Tools.Extensions.Consul
         }
 
         public static IApplicationBuilder UseConsul(this IApplicationBuilder app)
-        {
+        {          
+            var consul = app.ApplicationServices.GetRequiredService<IConsulClient>();           
+            var consulConfig = app.ApplicationServices.GetService<ConsulConfiguration>();    
+            var applifetime =   app.ApplicationServices.GetService<IHostApplicationLifetime>();    
             
-            var consulClient = app.ApplicationServices.GetService<ConsulConfiguration>();
-            
-            using (var scope = app.ApplicationServices.CreateScope())
+            Guid serviceId = Guid.NewGuid();
+
+            string consulServiceID = $"{consulConfig.ServiceName}:{serviceId}";
+
+            var registration = new AgentServiceRegistration()
             {
-                // var configuration = scope.ServiceProvider.GetService<IConfiguration>();
+                ID = consulServiceID,
+                Name = consulConfig.ServiceName,
+                Address = consulConfig.ServiceHost,
+                Port = consulConfig.ServicePort  
+            };
 
-                // //var config = configuration.Bind(<ConsulConfiguration>("Consul");
+            var check = new AgentServiceCheck
+            {
+                Interval = TimeSpan.FromSeconds(consulConfig.Interval),
+                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(consulConfig.RemoveAfterInterval),
+                HTTP = consulConfig.HealthCheckUrl
+            };
+            registration.Checks = new[] {check};
 
-                // var consulServiceRistration = new AgentServiceRegistration
-                // {
-                //     Name = config.Service,
-                //     ID = consulServiceID,
-                //     Address = config.Address,
-                //     Port = config.Port
-                // };
+            consul.Agent.ServiceRegister(registration).ConfigureAwait(true);
 
-                return app;
-            }  
-                  
+            applifetime.ApplicationStopping.Register(() =>
+            {
+                consul.Agent.ServiceDeregister(consulServiceID);
+            });
+
+            return app;                  
         }
 
     }
