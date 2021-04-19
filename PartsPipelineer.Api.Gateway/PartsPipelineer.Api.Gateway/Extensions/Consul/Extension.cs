@@ -5,11 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace PartsPipelineer.Services.Tools.Extensions.Consul
+namespace PartsPipelineer.Api.Gateway.Extensions.Consul
 {
     public static class Extension
     {
-        public static IServiceCollection AddConsul(this IServiceCollection services, IConfiguration configuration)
+           public static IServiceCollection AddConsul(this IServiceCollection services, IConfiguration configuration)
         {
             var consulConfiguration = configuration.GetSection("Consul").Get<ConsulConfiguration>();
 
@@ -58,7 +58,6 @@ namespace PartsPipelineer.Services.Tools.Extensions.Consul
             });
 
             return app;                  
-        }
-
+        }     
     }
 }

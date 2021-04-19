@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using PartsPipelineer.Api.Gateway.Extensions.Consul;
 
 namespace PartsPipelineer.Api.Gateway
 {
@@ -29,6 +30,10 @@ namespace PartsPipelineer.Api.Gateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();  
+
+            services.AddConsul(Configuration);
+
+            services.AddHealthChecks();
 
             services.AddSwaggerForOcelot(Configuration);
 
@@ -47,7 +52,7 @@ namespace PartsPipelineer.Api.Gateway
                 opt.PathToSwaggerGenerator = "/swagger/docs";
             });
 
-            app.UseOcelot();
+            app.UseConsul();
 
             app.UseHttpsRedirection();
 
@@ -58,7 +63,10 @@ namespace PartsPipelineer.Api.Gateway
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
+
+            app.UseOcelot();
         }
     }
 }

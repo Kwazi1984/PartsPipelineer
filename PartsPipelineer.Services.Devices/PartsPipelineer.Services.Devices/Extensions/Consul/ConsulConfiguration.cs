@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PartsPipelineer.Services.Tools.Extensions.Consul
+namespace PartsPipelineer.Services.Devices.Extensions.Consul
 {
     public class ConsulConfiguration
     {

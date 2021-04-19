@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PartsPipelineer.Services.Tools.Extensions.Consul
+namespace PartsPipelineer.Api.Gateway.Extensions.Consul
 {
     public class ConsulConfiguration
     {

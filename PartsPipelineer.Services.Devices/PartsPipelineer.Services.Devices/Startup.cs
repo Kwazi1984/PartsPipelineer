@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PartsPipelineer.Services.Devices.Extensions.Consul;
 
 namespace PartsPipelineer.Services.Devices
 {
@@ -34,6 +35,11 @@ namespace PartsPipelineer.Services.Devices
             }));
 
             services.AddControllers();
+
+            services.AddConsul(Configuration);
+
+            services.AddHealthChecks();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PartsPipelineer.Services.Devices", Version = "v1" });
@@ -50,6 +56,8 @@ namespace PartsPipelineer.Services.Devices
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PartsPipelineer.Services.Devices v1"));
             }
 
+            app.UseConsul();
+
             app.UseCors("ApiGatewayPolicy");
 
             app.UseHttpsRedirection();
@@ -61,6 +69,7 @@ namespace PartsPipelineer.Services.Devices
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
     }

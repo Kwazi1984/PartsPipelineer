@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace PartsPipelineer.Services.Tools.Extensions.Consul
+namespace PartsPipelineer.Services.Devices.Extensions.Consul
 {
     public static class Extension
     {
@@ -59,6 +59,5 @@ namespace PartsPipelineer.Services.Tools.Extensions.Consul
 
             return app;                  
         }
-
     }
 }
