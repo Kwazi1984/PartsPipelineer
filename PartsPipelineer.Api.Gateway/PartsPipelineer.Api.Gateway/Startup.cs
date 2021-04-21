@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Consul;
 using PartsPipelineer.Api.Gateway.Extensions.Consul;
 
 namespace PartsPipelineer.Api.Gateway
@@ -37,7 +38,8 @@ namespace PartsPipelineer.Api.Gateway
 
             services.AddSwaggerForOcelot(Configuration);
 
-            services.AddOcelot(Configuration);
+            services.AddOcelot(Configuration)
+                .AddConsul();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
